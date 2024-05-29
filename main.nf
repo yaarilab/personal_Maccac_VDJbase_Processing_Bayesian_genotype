@@ -35,16 +35,17 @@ params.ogrdbstats_report_first_alignment.chain = params.chain
 
 // Process Parameters for Undocumented_Alleles:
 params.Undocumented_Alleles.chain = "IGH"
-params.Undocumented_Alleles.num_threads = 10
-params.Undocumented_Alleles.germline_min = 100
-params.Undocumented_Alleles.min_seqs = 1
+params.Undocumented_Alleles.num_threads = 20
+params.Undocumented_Alleles.germline_min = 200
+params.Undocumented_Alleles.min_seqs = 50
 params.Undocumented_Alleles.auto_mutrange = "true"
 params.Undocumented_Alleles.mut_range = "1:10"
-params.Undocumented_Alleles.pos_range = "1:330"
+params.Undocumented_Alleles.pos_range = "1:318"
 params.Undocumented_Alleles.y_intercept = 0.125
 params.Undocumented_Alleles.alpha = 0.05
-params.Undocumented_Alleles.j_max = 0.3
+params.Undocumented_Alleles.j_max = 0.15
 params.Undocumented_Alleles.min_frac = 0.75
+
 
 
 // part 3
