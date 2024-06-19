@@ -230,13 +230,18 @@ file_path = '${readArray_j_ref}'  # Replace with the actual path
 df = fasta_to_dataframe(file_path)
 
 
-for index, row in df.iterrows():   
-  if len(row['ID']) > 50:
-    print("hoo")
-    print(row['ID'])
-    row['ID'] = row['ID'].split('*')[0] + '*' + row['ID'].split('*')[1].split('_')[0] + '_' + sha256(row['Sequence'].encode('utf-8')).hexdigest()[-4:]
+index_counter = 30  # Start index
 
-
+for index, row in df.iterrows():
+    if '_' in row['ID']:
+        print(row['ID'])
+        parts = row['ID'].split('*')
+        row['ID'] = f"{parts[0]}*{index_counter}"
+        # df.at[index, 'ID'] = row['ID']  # Update DataFrame with the new value
+        index_counter += 1
+        
+        
+        
 def dataframe_to_fasta(df, output_file, description_column='Description', default_description=''):
     records = []
 
@@ -261,7 +266,8 @@ def save_changes_to_csv(old_df, new_df, output_file):
     changes_df = pd.DataFrame(changes)
     if not changes_df.empty:
         changes_df.to_csv(output_file, index=False)
-        
+
+
 output_file_path = 'new_J_novel_germline.fasta'
 
 dataframe_to_fasta(df, output_file_path)
@@ -309,56 +315,6 @@ annotate_j ${germlineFile} ${aux_file}
 """
 }
 
-
-process Second_Alignment_J_MakeBlastDb {
-
-input:
- set val(db_name), file(germlineFile) from g_90_germlineFastaFile0_g11_17
-
-output:
- file "${db_name}"  into g11_17_germlineDb0_g11_9
-
-script:
-
-if(germlineFile.getName().endsWith("fasta")){
-	"""
-	sed -e '/^>/! s/[.]//g' ${germlineFile} > tmp_germline.fasta
-	mkdir -m777 ${db_name}
-	makeblastdb -parse_seqids -dbtype nucl -in tmp_germline.fasta -out ${db_name}/${db_name}
-	"""
-}else{
-	"""
-	echo something if off
-	"""
-}
-
-}
-
-
-process First_Alignment_J_MakeBlastDb {
-
-input:
- set val(db_name), file(germlineFile) from g_90_germlineFastaFile0_g0_17
-
-output:
- file "${db_name}"  into g0_17_germlineDb0_g0_9
-
-script:
-
-if(germlineFile.getName().endsWith("fasta")){
-	"""
-	sed -e '/^>/! s/[.]//g' ${germlineFile} > tmp_germline.fasta
-	mkdir -m777 ${db_name}
-	makeblastdb -parse_seqids -dbtype nucl -in tmp_germline.fasta -out ${db_name}/${db_name}
-	"""
-}else{
-	"""
-	echo something if off
-	"""
-}
-
-}
-
 g_3_germlineFastaFile_g_97= g_3_germlineFastaFile_g_97.ifEmpty([""]) 
 
 
@@ -403,13 +359,18 @@ file_path = '${readArray_D_ref}'  # Replace with the actual path
 df = fasta_to_dataframe(file_path)
 
 
-for index, row in df.iterrows():   
-  if len(row['ID']) > 50:
-    print("hoo")
-    print(row['ID'])
-    row['ID'] = row['ID'].split('*')[0] + '*' + row['ID'].split('*')[1].split('_')[0] + '_' + sha256(row['Sequence'].encode('utf-8')).hexdigest()[-4:]
+index_counter = 30  # Start index
 
-
+for index, row in df.iterrows():
+    if '_' in row['ID']:
+        print(row['ID'])
+        parts = row['ID'].split('*')
+        row['ID'] = f"{parts[0]}*{index_counter}"
+        # df.at[index, 'ID'] = row['ID']  # Update DataFrame with the new value
+        index_counter += 1
+        
+        
+        
 def dataframe_to_fasta(df, output_file, description_column='Description', default_description=''):
     records = []
 
@@ -460,56 +421,6 @@ with open(file_path, 'w'):
     
 """    
 }    
-}
-
-
-process Second_Alignment_D_MakeBlastDb {
-
-input:
- set val(db_name), file(germlineFile) from g_97_germlineFastaFile0_g11_16
-
-output:
- file "${db_name}"  into g11_16_germlineDb0_g11_9
-
-script:
-
-if(germlineFile.getName().endsWith("fasta")){
-	"""
-	sed -e '/^>/! s/[.]//g' ${germlineFile} > tmp_germline.fasta
-	mkdir -m777 ${db_name}
-	makeblastdb -parse_seqids -dbtype nucl -in tmp_germline.fasta -out ${db_name}/${db_name}
-	"""
-}else{
-	"""
-	echo something if off
-	"""
-}
-
-}
-
-
-process First_Alignment_D_MakeBlastDb {
-
-input:
- set val(db_name), file(germlineFile) from g_97_germlineFastaFile0_g0_16
-
-output:
- file "${db_name}"  into g0_16_germlineDb0_g0_9
-
-script:
-
-if(germlineFile.getName().endsWith("fasta")){
-	"""
-	sed -e '/^>/! s/[.]//g' ${germlineFile} > tmp_germline.fasta
-	mkdir -m777 ${db_name}
-	makeblastdb -parse_seqids -dbtype nucl -in tmp_germline.fasta -out ${db_name}/${db_name}
-	"""
-}else{
-	"""
-	echo something if off
-	"""
-}
-
 }
 
 
@@ -618,13 +529,38 @@ with open(file_path, 'w'):
 }
 
 
-process First_Alignment_V_MakeBlastDb {
+process Second_Alignment_D_MakeBlastDb {
 
 input:
- set val(db_name), file(germlineFile) from g_92_germlineFastaFile0_g0_22
+ set val(db_name), file(germlineFile) from g_97_germlineFastaFile0_g11_16
 
 output:
- file "${db_name}"  into g0_22_germlineDb0_g0_9
+ file "${db_name}"  into g11_16_germlineDb0_g11_9
+
+script:
+
+if(germlineFile.getName().endsWith("fasta")){
+	"""
+	sed -e '/^>/! s/[.]//g' ${germlineFile} > tmp_germline.fasta
+	mkdir -m777 ${db_name}
+	makeblastdb -parse_seqids -dbtype nucl -in tmp_germline.fasta -out ${db_name}/${db_name}
+	"""
+}else{
+	"""
+	echo something if off
+	"""
+}
+
+}
+
+
+process Second_Alignment_J_MakeBlastDb {
+
+input:
+ set val(db_name), file(germlineFile) from g_90_germlineFastaFile0_g11_17
+
+output:
+ file "${db_name}"  into g11_17_germlineDb0_g11_9
 
 script:
 
@@ -664,6 +600,81 @@ ndm_file = db_name+".ndm"
 """
 make_igblast_ndm ${germlineFile} ${chain} ${ndm_file}
 """
+
+}
+
+
+process First_Alignment_D_MakeBlastDb {
+
+input:
+ set val(db_name), file(germlineFile) from g_97_germlineFastaFile0_g0_16
+
+output:
+ file "${db_name}"  into g0_16_germlineDb0_g0_9
+
+script:
+
+if(germlineFile.getName().endsWith("fasta")){
+	"""
+	sed -e '/^>/! s/[.]//g' ${germlineFile} > tmp_germline.fasta
+	mkdir -m777 ${db_name}
+	makeblastdb -parse_seqids -dbtype nucl -in tmp_germline.fasta -out ${db_name}/${db_name}
+	"""
+}else{
+	"""
+	echo something if off
+	"""
+}
+
+}
+
+
+process First_Alignment_J_MakeBlastDb {
+
+input:
+ set val(db_name), file(germlineFile) from g_90_germlineFastaFile0_g0_17
+
+output:
+ file "${db_name}"  into g0_17_germlineDb0_g0_9
+
+script:
+
+if(germlineFile.getName().endsWith("fasta")){
+	"""
+	sed -e '/^>/! s/[.]//g' ${germlineFile} > tmp_germline.fasta
+	mkdir -m777 ${db_name}
+	makeblastdb -parse_seqids -dbtype nucl -in tmp_germline.fasta -out ${db_name}/${db_name}
+	"""
+}else{
+	"""
+	echo something if off
+	"""
+}
+
+}
+
+
+process First_Alignment_V_MakeBlastDb {
+
+input:
+ set val(db_name), file(germlineFile) from g_92_germlineFastaFile0_g0_22
+
+output:
+ file "${db_name}"  into g0_22_germlineDb0_g0_9
+
+script:
+
+if(germlineFile.getName().endsWith("fasta")){
+	"""
+	sed -e '/^>/! s/[.]//g' ${germlineFile} > tmp_germline.fasta
+	mkdir -m777 ${db_name}
+	makeblastdb -parse_seqids -dbtype nucl -in tmp_germline.fasta -out ${db_name}/${db_name}
+	"""
+}else{
+	"""
+	echo something if off
+	"""
+}
 
 }
 
@@ -1040,52 +1051,6 @@ if(airrFile.getName().endsWith(".tsv")){
 }
 
 
-process airrseq_to_fasta {
-
-input:
- set val(name), file(airrseq_data) from g0_19_outputFileTSV0_g_80
-
-output:
- set val(name), file(outfile)  into g_80_germlineFastaFile0_g11_12, g_80_germlineFastaFile0_g11_9, g_80_germlineFastaFile0_g21_12, g_80_germlineFastaFile0_g21_9
-
-script:
-
-outfile = name+"_collapsed_seq.fasta"
-
-"""
-#!/usr/bin/env Rscript
-
-data <- data.table::fread("${airrseq_data}", stringsAsFactors = F, data.table = F)
-
-data_columns <- names(data)
-
-# take extra columns after cdr3
-
-idx_cdr <- which(data_columns=="cdr3")+1
-
-add_columns <- data_columns[idx_cdr:length(data_columns)]
-
-unique_information <- unique(c("sequence_id", "duplicate_count", "consensus_count", "c_call", add_columns))
-
-unique_information <- unique_information[unique_information %in% data_columns]
-
-seqs <- data[["sequence"]]
-
-seqs_name <-
-  sapply(1:nrow(data), function(x) {
-    paste0(unique_information,
-           rep('=', length(unique_information)),
-           data[x, unique_information],
-           collapse = '|')
-  })
-seqs_name <- gsub('sequence_id=', '', seqs_name, fixed = T)
-
-tigger::writeFasta(setNames(seqs, seqs_name), "${outfile}")
-
-"""
-}
-
-
 process ogrdbstats_report_first_alignment {
 
 publishDir params.outdir, mode: 'copy', saveAs: {filename -> if (filename =~ /.*pdf$/) "ogrdbstats_first_alignment/$filename"}
@@ -1458,6 +1423,234 @@ ndm_file = db_name+".ndm"
 make_igblast_ndm ${germlineFile} ${chain} ${ndm_file}
 """
 
+}
+
+
+process First_Alignment_alignment_report_table {
+
+publishDir params.outdir, mode: 'copy', saveAs: {filename -> if (filename =~ /.*.tsv.gz$/) "report_tables/$filename"}
+input:
+ set val(name),file(collapse_pass) from g0_19_outputFileTSV0_g0_52
+ set val(name1),file(collapse_fail) from g0_19_outputFileTSV1_g0_52
+ set val(name2),file(makedb_fail) from g0_12_outputFileTSV2_g0_52
+ set val(name3),file(makedb_pass) from g0_12_outputFileTSV0_g0_52
+
+output:
+ file "*.tsv.gz"  into g0_52_outputFileTSV00
+
+script:
+name_alignment = params.First_Alignment_alignment_report_table.name_alignment
+
+outname = name+'_'+name_alignment
+
+
+collapse_pass = collapse_pass.toString().split(' ')[0]
+collapse_fail = collapse_fail.toString().split(' ')[0]
+makedb_fail = makedb_fail.toString().split(' ')[0]
+makedb_pass = makedb_pass.toString().split(' ')[0]
+
+"""
+#!/usr/bin/env Rscript
+
+## functions
+
+write_file <- function(x, file){
+	data.table::fwrite(
+	x = x,
+	file = file,
+	sep = "\t",
+	compress = "auto"
+	)	
+}
+
+##
+
+sample_name <- "${name}"
+db_collapse_pass <- data.table::fread("${collapse_pass}")
+db_collapse_fail <- data.table::fread("${collapse_fail}")
+db_makedb_fail <- data.table::fread("${makedb_fail}")
+db_makedb_pass <- data.table::fread("${makedb_pass}")
+
+## add status columns
+
+db_collapse_pass[['collapse_pass']] <- TRUE
+db_collapse_pass[['igblast_pass']] <- TRUE
+
+db_collapse_fail[['collapse_pass']] <- FALSE
+db_collapse_fail[['igblast_pass']] <- TRUE
+
+db_makedb_fail[['collapse_pass']] <- FALSE
+db_makedb_fail[['igblast_pass']] <- FALSE
+
+db_makedb_pass[['collapse_pass']] <- FALSE
+db_makedb_pass[['igblast_pass']] <- TRUE
+
+
+######### absolute numbers #########
+
+igblast_pass <- nrow(db_makedb_pass)
+igblast_pass_productive <- sum(db_makedb_pass[['productive']]==TRUE)
+igblast_fail <- nrow(db_makedb_fail)
+
+collapse_pass <- nrow(db_collapse_pass)
+collase_fail <- nrow(db_collapse_fail)
+
+db_collapse_pass[['v_gene']] <- alakazam::getGene(db_collapse_pass[['v_call']], first=FALSE)
+
+ma_collapse_pass <- sum(grepl(",", db_collapse_pass[['v_gene']]))
+
+tab <- data.frame(sample = sample_name, 
+				category = c(
+					'Igblast passed reads',
+					'Igblast failed reads',
+					'Igblast passed productive reads',
+					'Collapsed passed reads',
+					'Collapsed failed reads',
+					'Collapsed passed productive reads',
+					'Multiple ASC assignments'
+					),
+				values = c(
+					igblast_pass,
+					igblast_fail,
+					igblast_pass_productive,
+					collapse_pass,
+					collase_fail,
+					collapse_pass,
+					ma_collapse_pass
+					)
+)
+
+write_file(
+	x = tab,
+	file = paste0("${outname}","_absolute_numbers.tsv.gz")
+)
+
+
+remove(igblast_fail)
+
+####################################
+
+############# V start #############
+
+v_start_align_makedb <- as.data.frame(stringi::stri_locate_first(db_makedb_pass[['sequence_alignment']], regex = "[ATCG]"))
+v_start_align_makedb[['Stage']] <- 'IgBlast'
+v_start_align_makedb[['sample']] <- sample_name
+
+v_start_align_collapse <- as.data.frame(stringi::stri_locate_first(db_collapse_pass[['sequence_alignment']], regex = "[ATCG]"))
+v_start_align_collapse[['Stage']] <- 'Collapse'
+v_start_align_collapse[['sample']] <- sample_name
+
+v_start_align <- rbind(v_start_align_makedb, v_start_align_collapse)
+
+write_file(
+	x = v_start_align,
+	file = paste0("${outname}","_v_start.tsv.gz")
+)
+
+#######################################
+
+############# UTR5 length #############
+
+utr5_size_seq_makedb <- data.frame(
+						utr5_length = db_makedb_pass[['v_sequence_start']]-1, 
+						Stage = 'IgBlast', 
+						sample = sample_name, stringsAsFactors = FALSE)
+
+utr5_size_seq_collapse <- data.frame(
+						utr5_length = db_collapse_pass[['v_sequence_start']]-1, 
+						Stage = 'Collapse', 
+						sample = sample_name, stringsAsFactors = FALSE)
+
+utr5_size_seq <- rbind(utr5_size_seq_makedb, utr5_size_seq_collapse)
+
+write_file(
+	x = utr5_size_seq,
+	file = paste0("${outname}","_utr5_length.tsv.gz")
+)
+
+#######################################
+
+########### Collapse thresh #############
+
+# productive based on duplicate/consensus threshold
+
+col_thresh <- if('consensus_count' %in% names(db_collapse_pass)) 'consensus_count' else 'duplicate_count'
+
+thresh_val <- min(db_collapse_pass[[col_thresh]])
+
+thresh_seq <- 0:100
+
+thresh_values <- data.table::rbindlist(lapply(thresh_seq, function(t){
+	collapse_pass_prod_true_above_thresh <- sum(db_collapse_pass[[col_thresh]]>=t)
+	collapse_fail_prod_true_above_thresh <- sum(db_collapse_fail[[col_thresh]]>=t && db_collapse_fail[['productive']]==TRUE)
+	collapse_fail_prod_all_above_thresh <- sum(db_collapse_fail[[col_thresh]]>=t)
+	
+	data.frame(
+	Stage = 'Collapse',
+	sample = sample_name,
+	thresh_col = col_thresh,
+	thresh_val = t, 
+	productive_pass = collapse_pass_prod_true_above_thresh + collapse_fail_prod_true_above_thresh, 
+	above_threshold = collapse_fail_prod_all_above_thresh, stringsAsFactors = FALSE)
+}))
+
+write_file(
+	x = thresh_values,
+	file = paste0("${outname}","_collapse_thresh.tsv.gz")
+)
+
+#######################################
+
+
+"""
+
+
+}
+
+
+process airrseq_to_fasta {
+
+input:
+ set val(name), file(airrseq_data) from g0_19_outputFileTSV0_g_80
+
+output:
+ set val(name), file(outfile)  into g_80_germlineFastaFile0_g11_12, g_80_germlineFastaFile0_g11_9, g_80_germlineFastaFile0_g21_12, g_80_germlineFastaFile0_g21_9
+
+script:
+
+outfile = name+"_collapsed_seq.fasta"
+
+"""
+#!/usr/bin/env Rscript
+
+data <- data.table::fread("${airrseq_data}", stringsAsFactors = F, data.table = F)
+
+data_columns <- names(data)
+
+# take extra columns after cdr3
+
+idx_cdr <- which(data_columns=="cdr3")+1
+
+add_columns <- data_columns[idx_cdr:length(data_columns)]
+
+unique_information <- unique(c("sequence_id", "duplicate_count", "consensus_count", "c_call", add_columns))
+
+unique_information <- unique_information[unique_information %in% data_columns]
+
+seqs <- data[["sequence"]]
+
+seqs_name <-
+  sapply(1:nrow(data), function(x) {
+    paste0(unique_information,
+           rep('=', length(unique_information)),
+           data[x, unique_information],
+           collapse = '|')
+  })
+seqs_name <- gsub('sequence_id=', '', seqs_name, fixed = T)
+
+tigger::writeFasta(setNames(seqs, seqs_name), "${outfile}")
+
+"""
 }
 
 
@@ -3487,188 +3680,6 @@ names(genos)[col_loc] = new_genotyped_allele_name
 # write the report
 write.table(genos, file = paste0("${outname}","_genotype.tsv"), row.names = F, sep = "\t")
 """
-}
-
-
-process First_Alignment_alignment_report_table {
-
-publishDir params.outdir, mode: 'copy', saveAs: {filename -> if (filename =~ /.*.tsv.gz$/) "report_tables/$filename"}
-input:
- set val(name),file(collapse_pass) from g0_19_outputFileTSV0_g0_52
- set val(name1),file(collapse_fail) from g0_19_outputFileTSV1_g0_52
- set val(name2),file(makedb_fail) from g0_12_outputFileTSV2_g0_52
- set val(name3),file(makedb_pass) from g0_12_outputFileTSV0_g0_52
-
-output:
- file "*.tsv.gz"  into g0_52_outputFileTSV00
-
-script:
-name_alignment = params.First_Alignment_alignment_report_table.name_alignment
-
-outname = name+'_'+name_alignment
-
-
-collapse_pass = collapse_pass.toString().split(' ')[0]
-collapse_fail = collapse_fail.toString().split(' ')[0]
-makedb_fail = makedb_fail.toString().split(' ')[0]
-makedb_pass = makedb_pass.toString().split(' ')[0]
-
-"""
-#!/usr/bin/env Rscript
-
-## functions
-
-write_file <- function(x, file){
-	data.table::fwrite(
-	x = x,
-	file = file,
-	sep = "\t",
-	compress = "auto"
-	)	
-}
-
-##
-
-sample_name <- "${name}"
-db_collapse_pass <- data.table::fread("${collapse_pass}")
-db_collapse_fail <- data.table::fread("${collapse_fail}")
-db_makedb_fail <- data.table::fread("${makedb_fail}")
-db_makedb_pass <- data.table::fread("${makedb_pass}")
-
-## add status columns
-
-db_collapse_pass[['collapse_pass']] <- TRUE
-db_collapse_pass[['igblast_pass']] <- TRUE
-
-db_collapse_fail[['collapse_pass']] <- FALSE
-db_collapse_fail[['igblast_pass']] <- TRUE
-
-db_makedb_fail[['collapse_pass']] <- FALSE
-db_makedb_fail[['igblast_pass']] <- FALSE
-
-db_makedb_pass[['collapse_pass']] <- FALSE
-db_makedb_pass[['igblast_pass']] <- TRUE
-
-
-######### absolute numbers #########
-
-igblast_pass <- nrow(db_makedb_pass)
-igblast_pass_productive <- sum(db_makedb_pass[['productive']]==TRUE)
-igblast_fail <- nrow(db_makedb_fail)
-
-collapse_pass <- nrow(db_collapse_pass)
-collase_fail <- nrow(db_collapse_fail)
-
-db_collapse_pass[['v_gene']] <- alakazam::getGene(db_collapse_pass[['v_call']], first=FALSE)
-
-ma_collapse_pass <- sum(grepl(",", db_collapse_pass[['v_gene']]))
-
-tab <- data.frame(sample = sample_name, 
-				category = c(
-					'Igblast passed reads',
-					'Igblast failed reads',
-					'Igblast passed productive reads',
-					'Collapsed passed reads',
-					'Collapsed failed reads',
-					'Collapsed passed productive reads',
-					'Multiple ASC assignments'
-					),
-				values = c(
-					igblast_pass,
-					igblast_fail,
-					igblast_pass_productive,
-					collapse_pass,
-					collase_fail,
-					collapse_pass,
-					ma_collapse_pass
-					)
-)
-
-write_file(
-	x = tab,
-	file = paste0("${outname}","_absolute_numbers.tsv.gz")
-)
-
-
-remove(igblast_fail)
-
-####################################
-
-############# V start #############
-
-v_start_align_makedb <- as.data.frame(stringi::stri_locate_first(db_makedb_pass[['sequence_alignment']], regex = "[ATCG]"))
-v_start_align_makedb[['Stage']] <- 'IgBlast'
-v_start_align_makedb[['sample']] <- sample_name
-
-v_start_align_collapse <- as.data.frame(stringi::stri_locate_first(db_collapse_pass[['sequence_alignment']], regex = "[ATCG]"))
-v_start_align_collapse[['Stage']] <- 'Collapse'
-v_start_align_collapse[['sample']] <- sample_name
-
-v_start_align <- rbind(v_start_align_makedb, v_start_align_collapse)
-
-write_file(
-	x = v_start_align,
-	file = paste0("${outname}","_v_start.tsv.gz")
-)
-
-#######################################
-
-############# UTR5 length #############
-
-utr5_size_seq_makedb <- data.frame(
-						utr5_length = db_makedb_pass[['v_sequence_start']]-1, 
-						Stage = 'IgBlast', 
-						sample = sample_name, stringsAsFactors = FALSE)
-
-utr5_size_seq_collapse <- data.frame(
-						utr5_length = db_collapse_pass[['v_sequence_start']]-1, 
-						Stage = 'Collapse', 
-						sample = sample_name, stringsAsFactors = FALSE)
-
-utr5_size_seq <- rbind(utr5_size_seq_makedb, utr5_size_seq_collapse)
-
-write_file(
-	x = utr5_size_seq,
-	file = paste0("${outname}","_utr5_length.tsv.gz")
-)
-
-#######################################
-
-########### Collapse thresh #############
-
-# productive based on duplicate/consensus threshold
-
-col_thresh <- if('consensus_count' %in% names(db_collapse_pass)) 'consensus_count' else 'duplicate_count'
-
-thresh_val <- min(db_collapse_pass[[col_thresh]])
-
-thresh_seq <- 0:100
-
-thresh_values <- data.table::rbindlist(lapply(thresh_seq, function(t){
-	collapse_pass_prod_true_above_thresh <- sum(db_collapse_pass[[col_thresh]]>=t)
-	collapse_fail_prod_true_above_thresh <- sum(db_collapse_fail[[col_thresh]]>=t && db_collapse_fail[['productive']]==TRUE)
-	collapse_fail_prod_all_above_thresh <- sum(db_collapse_fail[[col_thresh]]>=t)
-	
-	data.frame(
-	Stage = 'Collapse',
-	sample = sample_name,
-	thresh_col = col_thresh,
-	thresh_val = t, 
-	productive_pass = collapse_pass_prod_true_above_thresh + collapse_fail_prod_true_above_thresh, 
-	above_threshold = collapse_fail_prod_all_above_thresh, stringsAsFactors = FALSE)
-}))
-
-write_file(
-	x = thresh_values,
-	file = paste0("${outname}","_collapse_thresh.tsv.gz")
-)
-
-#######################################
-
-
-"""
-
-
 }
 
 g0_12_outputFileTSV2_g0_27= g0_12_outputFileTSV2_g0_27.ifEmpty([""]) 
