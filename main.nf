@@ -2849,7 +2849,7 @@ if (file.exists("changes.csv")) {
     genotype <- apply(genotype, 2, function(x) gsub(old_id, new_id, x))
 
     # Write the modified data back to the TSV file
-    write.table(genotype, "${genotype}" , sep = "\t", row.names = FALSE, col.names = TRUE, quote = FALSE)
+    write.table(genotype, "n_${genotype}" , sep = "\t", row.names = FALSE, col.names = TRUE, quote = FALSE)
 
   }
 
