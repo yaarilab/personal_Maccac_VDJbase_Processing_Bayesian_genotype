@@ -2843,13 +2843,13 @@ if (file.exists("changes.csv")) {
     
     #system(paste("sed -i 's/", new_id, "/", old_id, "/g' ${genotype}", sep = ""))
     
-    genotype <- read.table(${genotype} , header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+    genotype <- read.table("${genotype}" , header = TRUE, sep = "\t", stringsAsFactors = FALSE)
     
     # Replace old_id with new_id in the TSV file
     genotype <- apply(genotype, 2, function(x) gsub(old_id, new_id, x))
 
     # Write the modified data back to the TSV file
-    write.table(genotype, ${genotype} , sep = "\t", row.names = FALSE, col.names = TRUE, quote = FALSE)
+    write.table(genotype, "${genotype}" , sep = "\t", row.names = FALSE, col.names = TRUE, quote = FALSE)
 
   }
 
