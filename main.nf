@@ -2799,12 +2799,14 @@ g_29_outputFileTSV0_g_98= g_29_outputFileTSV0_g_98.ifEmpty([""])
 process change_files_personal {
 
 publishDir params.outdir, mode: 'copy', saveAs: {filename -> if (filename =~ /${genotype}$/) "genotype_report/$filename"}
+publishDir params.outdir, mode: 'copy', saveAs: {filename -> if (filename =~ /changes.csv$/) "changes/$filename"}
 input:
  file csv from g_92_csvFile1_g_98
  set val(name2),file(genotype_file) from g_29_outputFileTSV0_g_98
 
 output:
  set val("${genotype}"), file("${genotype}")  into g_98_outputFileTSV00
+ file file("changes.csv") optional true  into g_98_outputFileCSV11
 
 
 script:
