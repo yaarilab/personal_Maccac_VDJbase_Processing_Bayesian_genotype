@@ -195,7 +195,7 @@ input:
  set val(name), file(J_ref) from g_4_germlineFastaFile_g_90
 
 output:
- set val(name), file("new_J_novel_germline*")  into g_90_germlineFastaFile0_g_31, g_90_germlineFastaFile0_g_91, g_90_germlineFastaFile0_g0_17, g_90_germlineFastaFile0_g0_12, g_90_germlineFastaFile0_g11_17, g_90_germlineFastaFile0_g11_12, g_90_germlineFastaFile0_g14_0, g_90_germlineFastaFile0_g14_1
+ set val(name), file("new_J_novel_germline*")  into g_90_germlineFastaFile0_g_31, g_90_germlineFastaFile0_g_91, g_90_germlineFastaFile0_g11_17, g_90_germlineFastaFile0_g11_12, g_90_germlineFastaFile0_g14_0, g_90_germlineFastaFile0_g14_1, g_90_germlineFastaFile0_g0_17, g_90_germlineFastaFile0_g0_12
  file "changes.csv" optional true  into g_90_outputFileCSV11
 
 
@@ -302,7 +302,7 @@ input:
  set val(db_name), file(germlineFile) from g_90_germlineFastaFile0_g_91
 
 output:
- file aux_file  into g_91_outputFileTxt0_g0_9, g_91_outputFileTxt0_g11_9, g_91_outputFileTxt0_g21_9
+ file aux_file  into g_91_outputFileTxt0_g11_9, g_91_outputFileTxt0_g21_9, g_91_outputFileTxt0_g0_9
 
 script:
 
@@ -324,7 +324,7 @@ input:
  set val(name), file(D_ref) from g_3_germlineFastaFile_g_97
 
 output:
- set val(name), file("new_D_novel_germline*")  into g_97_germlineFastaFile0_g_75, g_97_germlineFastaFile0_g0_16, g_97_germlineFastaFile0_g0_12, g_97_germlineFastaFile0_g11_16, g_97_germlineFastaFile0_g11_12, g_97_germlineFastaFile0_g14_0, g_97_germlineFastaFile0_g14_1
+ set val(name), file("new_D_novel_germline*")  into g_97_germlineFastaFile0_g_75, g_97_germlineFastaFile0_g11_16, g_97_germlineFastaFile0_g11_12, g_97_germlineFastaFile0_g14_0, g_97_germlineFastaFile0_g14_1, g_97_germlineFastaFile0_g0_16, g_97_germlineFastaFile0_g0_12
  file "changes.csv" optional true  into g_97_outputFileCSV11
 
 
@@ -604,7 +604,7 @@ make_igblast_ndm ${germlineFile} ${chain} ${ndm_file}
 }
 
 
-process First_Alignment_D_MakeBlastDb {
+process Alignment_D_MakeBlastDb {
 
 input:
  set val(db_name), file(germlineFile) from g_97_germlineFastaFile0_g0_16
@@ -629,7 +629,7 @@ if(germlineFile.getName().endsWith("fasta")){
 }
 
 
-process First_Alignment_J_MakeBlastDb {
+process Alignment_J_MakeBlastDb {
 
 input:
  set val(db_name), file(germlineFile) from g_90_germlineFastaFile0_g0_17
@@ -654,7 +654,7 @@ if(germlineFile.getName().endsWith("fasta")){
 }
 
 
-process First_Alignment_V_MakeBlastDb {
+process Alignment_V_MakeBlastDb {
 
 input:
  set val(db_name), file(germlineFile) from g_92_germlineFastaFile0_g0_22
@@ -679,7 +679,7 @@ if(germlineFile.getName().endsWith("fasta")){
 }
 
 
-process First_Alignment_IgBlastn {
+process Alignment_IgBlastn {
 
 input:
  set val(name),file(fastaFile) from g_94_fastaFile_g0_9
@@ -693,11 +693,11 @@ output:
  set val(name), file("${outfile}") optional true  into g0_9_igblastOut0_g0_12
 
 script:
-num_threads = params.First_Alignment_IgBlastn.num_threads
-ig_seqtype = params.First_Alignment_IgBlastn.ig_seqtype
-outfmt = params.First_Alignment_IgBlastn.outfmt
-num_alignments_V = params.First_Alignment_IgBlastn.num_alignments_V
-domain_system = params.First_Alignment_IgBlastn.domain_system
+num_threads = params.Alignment_IgBlastn.num_threads
+ig_seqtype = params.Alignment_IgBlastn.ig_seqtype
+outfmt = params.Alignment_IgBlastn.outfmt
+num_alignments_V = params.Alignment_IgBlastn.num_alignments_V
+domain_system = params.Alignment_IgBlastn.domain_system
 
 randomString = org.apache.commons.lang.RandomStringUtils.random(9, true, true)
 outname = name + "_" + randomString
@@ -728,7 +728,7 @@ if(db_v.toString()!="" && db_d.toString()!="" && db_j.toString()!=""){
 }
 
 
-process First_Alignment_MakeDb {
+process Alignment_MakeDb {
 
 publishDir params.outdir, mode: 'copy', saveAs: {filename -> if (filename =~ /.*_db-fail.tsv$/) "failed_makedb_reads_first_alignment/$filename"}
 input:
@@ -745,15 +745,15 @@ output:
 
 script:
 
-failed = params.First_Alignment_MakeDb.failed
-format = params.First_Alignment_MakeDb.format
-regions = params.First_Alignment_MakeDb.regions
-extended = params.First_Alignment_MakeDb.extended
-asisid = params.First_Alignment_MakeDb.asisid
-asiscalls = params.First_Alignment_MakeDb.asiscalls
-inferjunction = params.First_Alignment_MakeDb.inferjunction
-partial = params.First_Alignment_MakeDb.partial
-name_alignment = params.First_Alignment_MakeDb.name_alignment
+failed = params.Alignment_MakeDb.failed
+format = params.Alignment_MakeDb.format
+regions = params.Alignment_MakeDb.regions
+extended = params.Alignment_MakeDb.extended
+asisid = params.Alignment_MakeDb.asisid
+asiscalls = params.Alignment_MakeDb.asiscalls
+inferjunction = params.Alignment_MakeDb.inferjunction
+partial = params.Alignment_MakeDb.partial
+name_alignment = params.Alignment_MakeDb.name_alignment
 
 failed = (failed=="true") ? "--failed" : ""
 format = (format=="changeo") ? "--format changeo" : ""
@@ -797,7 +797,7 @@ if(igblastOut.getName().endsWith(".out")){
 }
 
 
-process First_Alignment_Collapse_AIRRseq {
+process Alignment_Collapse_AIRRseq {
 
 publishDir params.outdir, mode: 'copy', saveAs: {filename -> if (filename =~ /${outfile}+passed.tsv$/) "rearrangements/$filename"}
 input:
@@ -808,9 +808,9 @@ output:
  set val(name), file("${outfile}"+"failed*") optional true  into g0_19_outputFileTSV1_g0_27, g0_19_outputFileTSV1_g0_52
 
 script:
-conscount_min = params.First_Alignment_Collapse_AIRRseq.conscount_min
-n_max = params.First_Alignment_Collapse_AIRRseq.n_max
-name_alignment = params.First_Alignment_Collapse_AIRRseq.name_alignment
+conscount_min = params.Alignment_Collapse_AIRRseq.conscount_min
+n_max = params.Alignment_Collapse_AIRRseq.n_max
+name_alignment = params.Alignment_Collapse_AIRRseq.name_alignment
 
 
 outfile = airrFile.toString() - '.tsv' + name_alignment + "_collapsed-"
@@ -1077,7 +1077,7 @@ germline_file_path=\$(realpath ${germline_file})
 novel=""
 
 if grep -q "_[A-Z][0-9]" ${v_germline_file}; then
-	grep -A 6 "_[A-Z][0-9]" ${v_germline_file} > novel_sequences.fasta
+	awk '/^>/{f=0} \$0 ~ /_[A-Z][0-9]/ {f=1} f' ${v_germline_file} > novel_sequences.fasta
 	novel=\$(realpath novel_sequences.fasta)
 	diff \$germline_file_path \$novel | grep '^<' | sed 's/^< //' > personal_germline.fasta
 	germline_file_path=\$(realpath personal_germline.fasta)
@@ -1426,7 +1426,7 @@ make_igblast_ndm ${germlineFile} ${chain} ${ndm_file}
 }
 
 
-process First_Alignment_alignment_report_table {
+process Alignment_alignment_report_table {
 
 publishDir params.outdir, mode: 'copy', saveAs: {filename -> if (filename =~ /.*.tsv.gz$/) "report_tables/$filename"}
 input:
@@ -1439,7 +1439,7 @@ output:
  file "*.tsv.gz"  into g0_52_outputFileTSV00
 
 script:
-name_alignment = params.First_Alignment_alignment_report_table.name_alignment
+name_alignment = params.Alignment_alignment_report_table.name_alignment
 
 outname = name+'_'+name_alignment
 
@@ -1582,7 +1582,7 @@ thresh_seq <- 0:100
 
 thresh_values <- data.table::rbindlist(lapply(thresh_seq, function(t){
 	collapse_pass_prod_true_above_thresh <- sum(db_collapse_pass[[col_thresh]]>=t)
-	collapse_fail_prod_true_above_thresh <- sum(db_collapse_fail[[col_thresh]]>=t && db_collapse_fail[['productive']]==TRUE)
+	#collapse_fail_prod_true_above_thresh <- sum(db_collapse_fail[[col_thresh]]>=t && db_collapse_fail[['productive']]==TRUE)
 	collapse_fail_prod_all_above_thresh <- sum(db_collapse_fail[[col_thresh]]>=t)
 	
 	data.frame(
@@ -3507,7 +3507,7 @@ germline_file_path=\$(realpath ${germline_file})
 novel=""
 
 if grep -q "_[A-Z][0-9]" ${v_germline_file}; then
-	grep -A 6 "_[A-Z][0-9]" ${v_germline_file} > novel_sequences.fasta
+	awk '/^>/{f=0} \$0 ~ /_[A-Z][0-9]/ {f=1} f' ${v_germline_file} > novel_sequences.fasta
 	novel=\$(realpath novel_sequences.fasta)
 	diff \$germline_file_path \$novel | grep '^<' | sed 's/^< //' > personal_germline.fasta
 	germline_file_path=\$(realpath personal_germline.fasta)
@@ -3686,7 +3686,7 @@ g0_12_outputFileTSV2_g0_27= g0_12_outputFileTSV2_g0_27.ifEmpty([""])
 g0_19_outputFileTSV1_g0_27= g0_19_outputFileTSV1_g0_27.ifEmpty([""]) 
 
 
-process First_Alignment_count_aligmant_pass_fail {
+process Alignment_count_aligmant_pass_fail {
 
 input:
  set val(name), file(makeDb_pass) from g0_12_outputFileTSV0_g0_27
@@ -3808,7 +3808,7 @@ write.csv(df,"pipeline_statistics.csv")
 }
 
 
-process First_Alignment_after_make_db_report {
+process Alignment_after_make_db_report {
 
 input:
  set val(name), file(makeDb_pass) from g0_12_outputFileTSV0_g0_43
@@ -4153,7 +4153,7 @@ close OUT;
 }
 
 
-process First_Alignment_render_after_make_db_report {
+process Alignment_render_after_make_db_report {
 
 publishDir params.outdir, mode: 'copy', saveAs: {filename -> if (filename =~ /.*.html$/) "first_alignment_reports/$filename"}
 publishDir params.outdir, mode: 'copy', saveAs: {filename -> if (filename =~ /.*.html$/) "first_alignment_reports/$filename"}
