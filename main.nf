@@ -2824,6 +2824,9 @@ if (file.exists("changes.csv")) {
 
   # Read changes from CSV
   changes <- read.csv("changes.csv", header = FALSE, col.names = c("row", "old_id", "new_id"))
+  
+  genotype <- read.table("${genotype}" , header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+
 
   # Process changes and modify TSV files
   for (change in 1:nrow(changes)) {
@@ -2843,7 +2846,6 @@ if (file.exists("changes.csv")) {
     
     #system(paste("sed -i 's/", new_id, "/", old_id, "/g' ${genotype}", sep = ""))
     
-    genotype <- read.table("${genotype}" , header = TRUE, sep = "\t", stringsAsFactors = FALSE)
     
     # Replace old_id with new_id in the TSV file
     genotype <- apply(genotype, 2, function(x) gsub(old_id, new_id, x))
