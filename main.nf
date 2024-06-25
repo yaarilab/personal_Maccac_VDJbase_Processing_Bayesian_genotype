@@ -2806,7 +2806,7 @@ input:
 
 output:
  set val("${genotype}"), file("${genotype}")  into g_98_outputFileTSV00
- file file("changes.csv") optional true  into g_98_outputFileCSV11
+ file "changes.csv" optional true  into g_98_outputFileCSV11
 
 
 script:
