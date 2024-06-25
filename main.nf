@@ -1582,7 +1582,6 @@ thresh_seq <- 0:100
 
 thresh_values <- data.table::rbindlist(lapply(thresh_seq, function(t){
 	collapse_pass_prod_true_above_thresh <- sum(db_collapse_pass[[col_thresh]]>=t)
-	#collapse_fail_prod_true_above_thresh <- sum(db_collapse_fail[[col_thresh]]>=t && db_collapse_fail[['productive']]==TRUE)
 	collapse_fail_prod_all_above_thresh <- sum(db_collapse_fail[[col_thresh]]>=t)
 	
 	data.frame(
@@ -1590,7 +1589,6 @@ thresh_values <- data.table::rbindlist(lapply(thresh_seq, function(t){
 	sample = sample_name,
 	thresh_col = col_thresh,
 	thresh_val = t, 
-	productive_pass = collapse_pass_prod_true_above_thresh + collapse_fail_prod_true_above_thresh, 
 	above_threshold = collapse_fail_prod_all_above_thresh, stringsAsFactors = FALSE)
 }))
 
