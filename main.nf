@@ -139,38 +139,7 @@ params.TIgGER_bayesian_genotype_Inference_j_call.find_unmutated = "false"
 params.TIgGER_bayesian_genotype_Inference_j_call.single_assignments = "true"
 
 
-// part 6
 
-params.make_igblast_ndm_third_alignment.ndm_chain = params.ndm_chain
-
-// Process Parameters for Third_Alignment_IgBlastn:
-params.Third_Alignment_IgBlastn.num_threads = "10"
-params.Third_Alignment_IgBlastn.ig_seqtype = "Ig"
-params.Third_Alignment_IgBlastn.outfmt = "MakeDb"
-params.Third_Alignment_IgBlastn.num_alignments_V = "10"
-params.Third_Alignment_IgBlastn.domain_system = "imgt"
-
-params.Third_Alignment_MakeDb.failed = "true"
-params.Third_Alignment_MakeDb.format = "airr"
-params.Third_Alignment_MakeDb.regions = "default"
-params.Third_Alignment_MakeDb.extended = "true"
-params.Third_Alignment_MakeDb.asisid = "false"
-params.Third_Alignment_MakeDb.asiscalls = "false"
-params.Third_Alignment_MakeDb.inferjunction = "false"
-params.Third_Alignment_MakeDb.partial = "false"
-params.Third_Alignment_MakeDb.name_alignment = "_Finale"
-
-// Process Parameters for Third_Alignment_Collapse_AIRRseq:
-//params.Third_Alignment_Collapse_AIRRseq.conscount_min = 2
-//params.Third_Alignment_Collapse_AIRRseq.n_max = 10
-//params.Third_Alignment_Collapse_AIRRseq.name_alignment = "_Finale"
-
-
-
-// part 7
-
-// Process Parameters for ogrdbstats_report:
-params.ogrdbstats_report.chain = params.chain
 
 if (!params.v_germline_file){params.v_germline_file = ""} 
 if (!params.d_germline){params.d_germline = ""} 
