@@ -1250,7 +1250,7 @@ input:
  set val(name), file(v_ref) from g_8_germlineFastaFile1_g_70
 
 output:
- set val(name), file("new_V_novel_germline*")  into g_70_germlineFastaFile0_g_78, g_70_germlineFastaFile0_g_29, g_70_germlineFastaFile0_g_31, g_70_germlineFastaFile0_g_75, g_70_germlineFastaFile0_g14_0, g_70_germlineFastaFile0_g14_1, g_70_germlineFastaFile0_g11_22, g_70_germlineFastaFile0_g11_12, g_70_germlineFastaFile0_g11_43, g_70_germlineFastaFile0_g11_47
+ set val(name), file("new_V_novel_germline*")  into g_70_germlineFastaFile0_g_78, g_70_germlineFastaFile0_g_29, g_70_germlineFastaFile0_g14_0, g_70_germlineFastaFile0_g14_1, g_70_germlineFastaFile0_g11_22, g_70_germlineFastaFile0_g11_12, g_70_germlineFastaFile0_g11_43, g_70_germlineFastaFile0_g11_47
  file "changes.csv" optional true  into g_70_outputFileCSV11
 
 
@@ -2486,7 +2486,6 @@ publishDir params.outdir, mode: 'copy', saveAs: {filename -> if (filename =~ /${
 input:
  set val(name),file(airrFile) from g_83_outputFileTSV0_g_75
  set val(name1), file(germline_file) from g_97_germlineFastaFile0_g_75
- set val(name1), file(germline_file) from g_70_germlineFastaFile0_g_75
 
 output:
  set val("${call}_genotype"),file("${call}_genotype_report.tsv") optional true  into g_75_outputFileTSV00
@@ -2609,7 +2608,6 @@ publishDir params.outdir, mode: 'copy', saveAs: {filename -> if (filename =~ /${
 input:
  set val(name),file(airrFile) from g_83_outputFileTSV0_g_31
  set val(name1), file(germline_file) from g_90_germlineFastaFile0_g_31
- set val(name1), file(germline_file) from g_70_germlineFastaFile0_g_31
 
 output:
  set val("${call}_genotype"),file("${call}_genotype_report.tsv")  into g_31_outputFileTSV00
@@ -2800,6 +2798,7 @@ g_29_outputFileTSV0_g_98= g_29_outputFileTSV0_g_98.ifEmpty([""])
 
 process change_files_personal {
 
+publishDir params.outdir, mode: 'copy', saveAs: {filename -> if (filename =~ /${genotype}$/) "genotype_report/$filename"}
 input:
  file csv from g_92_csvFile1_g_98
  set val(name2),file(genotype_file) from g_29_outputFileTSV0_g_98
@@ -2842,7 +2841,15 @@ if (file.exists("changes.csv")) {
     
     # Modify genotype file
     
-    system(paste("sed -i 's/", new_id, "/", old_id, "/g' ${genotype}", sep = ""))
+    #system(paste("sed -i 's/", new_id, "/", old_id, "/g' ${genotype}", sep = ""))
+    
+    genotype <- read.table(${genotype} , header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+    
+    # Replace old_id with new_id in the TSV file
+    genotype <- apply(genotype, 2, function(x) gsub(old_id, new_id, x))
+
+    # Write the modified data back to the TSV file
+    write.table(genotype, ${genotype} , sep = "\t", row.names = FALSE, col.names = TRUE, quote = FALSE)
 
   }
 
