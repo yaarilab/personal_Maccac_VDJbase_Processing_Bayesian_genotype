@@ -36,8 +36,8 @@ params.ogrdbstats_report_first_alignment.chain = params.chain
 // Process Parameters for Undocumented_Alleles:
 params.Undocumented_Alleles.chain = "IGH"
 params.Undocumented_Alleles.num_threads = 20
-params.Undocumented_Alleles.germline_min = 200
-params.Undocumented_Alleles.min_seqs = 50
+params.Undocumented_Alleles.germline_min = 20
+params.Undocumented_Alleles.min_seqs = 7
 params.Undocumented_Alleles.auto_mutrange = "true"
 params.Undocumented_Alleles.mut_range = "1:10"
 params.Undocumented_Alleles.pos_range = "1:318"
@@ -1234,6 +1234,10 @@ if (class(novel) != 'try-error') {
 		}))
 		
 		novel <- novel[!SNP_XXXX, ]
+		
+		# remove duplicated novel alleles
+		bool <- !duplicated(novel[['polymorphism_call']])
+		novel <- novel[bool, ]
 		
 		# save novel output
 		write.table(
