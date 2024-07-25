@@ -2890,16 +2890,16 @@ genotype[[temp_call]] <- genotype[["${call}"]]
    g <- genotype[i,temp_call]
    
    for (change in 1:nrow(changes)) {
-  
-    old_id <- changes[change,"old_id"]
-    new_id <- changes[change,"new_id"]
+   
+      old_id <- changes[change,"old_id"]
+      new_id <- changes[change,"new_id"]
 
-    g = gsub(new_id, old_id, g)
+	  g = gsub(new_id, old_id, g)
 
-      if( g == new_id){
-       genotype[i,temp_call] <- old_id
+      if( !is.na(g) & g == new_id){
+    	genotype[i,temp_call] <- old_id
         break
-      }
+       }
     }
 }
 
@@ -2950,16 +2950,16 @@ genotype[[temp_call]] <- genotype[["${call}"]]
    g <- genotype[i,temp_call]
    
    for (change in 1:nrow(changes)) {
-  
-    old_id <- changes[change,"old_id"]
-    new_id <- changes[change,"new_id"]
+   
+      old_id <- changes[change,"old_id"]
+      new_id <- changes[change,"new_id"]
 
-    g = gsub(new_id, old_id, g)
+	  g = gsub(new_id, old_id, g)
 
-      if( g == new_id){
-       genotype[i,temp_call] <- old_id
+      if( !is.na(g) & g == new_id){
+    	genotype[i,temp_call] <- old_id
         break
-      }
+       }
     }
 }
 
@@ -3011,16 +3011,16 @@ genotype[[temp_call]] <- genotype[["${call}"]]
    g <- genotype[i,temp_call]
    
    for (change in 1:nrow(changes)) {
-  
-    old_id <- changes[change,"old_id"]
-    new_id <- changes[change,"new_id"]
+   
+      old_id <- changes[change,"old_id"]
+      new_id <- changes[change,"new_id"]
 
-    g = gsub(new_id, old_id, g)
+	  g = gsub(new_id, old_id, g)
 
-      if( g == new_id){
-       genotype[i,temp_call] <- old_id
+      if( !is.na(g) & g == new_id){
+    	genotype[i,temp_call] <- old_id
         break
-      }
+       }
     }
 }
 
