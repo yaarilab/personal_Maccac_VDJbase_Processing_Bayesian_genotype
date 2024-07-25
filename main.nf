@@ -2859,7 +2859,7 @@ input:
  file change_file from g_92_csvFile1_g_106
 
 output:
- set val(outname),file("*_fillter.tsv*")  into g_106_outputFileTSV0_g_107
+ set val(outname),file("*_fillter_change.tsv*")  into g_106_outputFileTSV0_g_107
 
 script:
 
@@ -2919,7 +2919,7 @@ input:
  file change_file from g_97_outputFileCSV1_g_107
 
 output:
- set val(outname),file("*_fillter.tsv*")  into g_107_outputFileTSV0_g_108
+ set val(outname),file("*_fillter_change.tsv*")  into g_107_outputFileTSV0_g_108
 
 script:
 
@@ -2974,13 +2974,13 @@ write.table(genotype, sep = "\t", file = paste0("${outname}", ".tsv"), row.names
 
 process change_bace_digger_novel_j {
 
-publishDir params.outdir, mode: 'copy', saveAs: {filename -> if (filename =~ /.*_fillter.tsv.*$/) "rearrangements/$filename"}
+publishDir params.outdir, mode: 'copy', saveAs: {filename -> if (filename =~ /.*_fillter_change.tsv.*$/) "rearrangements/$filename"}
 input:
  set val(name),file(airrFile) from g_107_outputFileTSV0_g_108
  file change_file from g_90_outputFileCSV1_g_108
 
 output:
- set val(outname),file("*_fillter.tsv*")  into g_108_outputFileTSV00
+ set val(outname),file("*_fillter_change.tsv*")  into g_108_outputFileTSV00
 
 script:
 
