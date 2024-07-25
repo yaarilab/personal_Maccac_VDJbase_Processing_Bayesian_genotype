@@ -2881,7 +2881,7 @@ changes <- read.csv("${change_file}", header = FALSE, col.names = c("row", "old_
 # Read the genotype TSV file
 genotype <- read.table("${airrFile}", header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 
-genotype[[[temp_call]] <- genotype[["${call}"]]
+genotype[[temp_call]] <- genotype[["${call}"]]
 
 # Process changes and modify the genotype data frame
 
@@ -2941,7 +2941,7 @@ changes <- read.csv("${change_file}", header = FALSE, col.names = c("row", "old_
 # Read the genotype TSV file
 genotype <- read.table("${airrFile}", header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 
-genotype[[[temp_call]] <- genotype[["${call}"]]
+genotype[[temp_call]] <- genotype[["${call}"]]
 
 # Process changes and modify the genotype data frame
 
@@ -3002,7 +3002,7 @@ changes <- read.csv("${change_file}", header = FALSE, col.names = c("row", "old_
 # Read the genotype TSV file
 genotype <- read.table("${airrFile}", header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 
-genotype[[[temp_call]] <- genotype[["${call}"]]
+genotype[[temp_call]] <- genotype[["${call}"]]
 
 # Process changes and modify the genotype data frame
 
