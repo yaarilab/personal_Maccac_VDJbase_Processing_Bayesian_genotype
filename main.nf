@@ -2907,7 +2907,7 @@ genotype[["${call}"]] <- genotype[[temp_call]]
 
 write.table(genotype, sep = "\t", file = paste0("${outname}", ".tsv"), row.names = FALSE)
 
-
+"""
 
 }
 
@@ -2967,7 +2967,7 @@ genotype[["${call}"]] <- genotype[[temp_call]]
 
 write.table(genotype, sep = "\t", file = paste0("${outname}", ".tsv"), row.names = FALSE)
 
-
+"""
 
 }
 
@@ -3028,7 +3028,7 @@ genotype[["${call}"]] <- genotype[[temp_call]]
 
 write.table(genotype, sep = "\t", file = paste0("${outname}", ".tsv"), row.names = FALSE)
 
-
+"""
 
 }
 
